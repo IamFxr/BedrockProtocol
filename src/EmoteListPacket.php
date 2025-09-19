@@ -44,6 +44,10 @@ class EmoteListPacket extends DataPacket implements ClientboundPacket, Serverbou
 	protected function decodePayload(PacketSerializer $in) : void{
 		$this->playerActorRuntimeId = $in->getActorRuntimeId();
 		$this->emoteIds = [];
+		$count = $in->getUnsignedVarInt();
+		if($count > 1020){
+			throw new \RuntimeException("Packet too big");
+		}
 		for($i = 0, $len = $in->getUnsignedVarInt(); $i < $len; ++$i){
 			$this->emoteIds[] = $in->getUUID();
 		}
