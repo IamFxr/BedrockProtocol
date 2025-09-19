@@ -98,6 +98,10 @@ class TextPacket extends DataPacket implements ClientboundPacket, ServerboundPac
 	protected function decodePayload(PacketSerializer $in) : void{
 		$this->type = $in->getByte();
 		$this->needsTranslation = $in->getBool();
+		$count = $in->getUnsignedVarInt();
+		if($count > 1200){
+			throw new \RuntimeException("Packet too big");
+		}
 		switch($this->type){
 			case self::TYPE_CHAT:
 			case self::TYPE_WHISPER:
