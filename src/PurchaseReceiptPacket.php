@@ -35,6 +35,10 @@ class PurchaseReceiptPacket extends DataPacket implements ServerboundPacket{
 
 	protected function decodePayload(PacketSerializer $in) : void{
 		$count = $in->getUnsignedVarInt();
+
+		if($count > 1200) {
+           throw new \RuntimeException("Packet too big");
+		} 
 		for($i = 0; $i < $count; ++$i){
 			$this->entries[] = $in->getString();
 		}
